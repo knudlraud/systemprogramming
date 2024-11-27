@@ -1,5 +1,7 @@
 #define _DEFAULT_SOURCE
 
+#include "storage_analysis.h"
+
 #include <stdio.h>
 #include <locale.h>
 #include <stdio.h>
@@ -159,7 +161,7 @@ void display_info(WINDOW *win, const char* path, DirEntry *entries, int count, i
     box(win, 0, 0);
 }
 
-int main() {
+int storage_analysis_main() {
     setlocale(LC_ALL, "ko_KR.utf8");
     char path[MAX_PATH];
     DirEntry entries[MAX_ENTRIES];

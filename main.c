@@ -1,6 +1,59 @@
-#include <stdio.h>
+#include <locale.h>
+#include <ncurses.h>
+#include <string.h>
+#include <signal.h>
+#include "storage_analysis.h"
 
-int main()
-{
-	printf("Hello, world!");
+int main() {
+    setlocale(LC_ALL, "ko_KR.utf8");
+
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    curs_set(0);
+    scrollok(stdscr, FALSE);
+
+    WINDOW *win = newwin(0, 0, 0, 0);
+    box(win, 0, 0);
+    scrollok(win, FALSE);
+
+    int quit = 0;
+    do {
+        napms(100);
+        wclear(win);
+        box(win, 0, 0);
+
+        // 터미널 크기 가져오기
+        int height, width;
+        getmaxyx(win, height, width);
+
+        // "고급 파일 탐색기" 텍스트의 위치 계산
+        int text_y = height / 4;  // 화면 높이의 1/4 지점 (중간 위쪽)
+        int text_x = (width - strlen("고급 파일 탐색기")) / 2;  // 가운데 정렬
+
+        mvwprintw(win, text_y, text_x, "고급 파일 탐색기");
+
+        // 1., 2., 3., 4. 항목 추가
+        const char *items[] = {"1. 스토리지 사용량", "2. 퍄일 검색", "3. 백업", "4. 종료"};
+        int num_items = sizeof(items) / sizeof(items[0]);
+
+        for (int i = 0; i < num_items; i++) {
+            mvwprintw(win, text_y + (height/5) + (2*i), text_x, "%s", items[i]);
+        }
+
+        echo();
+        noecho();
+
+        int ch = getch();
+        if (ch == '4') quit = 1;
+        if (ch == '1') storage_analysis_main();
+        wrefresh(win);
+    } while (!quit);
+
+    // Cleanup ncurses
+    delwin(win);
+    endwin();
+
+    return 0;
 }
