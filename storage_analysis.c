@@ -195,7 +195,7 @@ int storage_analysis_main() {
                 display_info(win, path, entries, count, page);
                 wrefresh(win);
 
-                int ch = getch();
+                int ch = wgetch(win);
                 if (ch == 'q') {
                     quit = 1;
                     break;
@@ -217,8 +217,7 @@ int storage_analysis_main() {
             mvwprintw(win, 3, 2, "Press any key to try again, 'q' to quit");
             box(win, 0, 0);
             wrefresh(win);
-
-            int ch = getch();
+            int ch = wgetch(win);
             if (ch == 'q') quit = 1;
         }
     } while (!quit);

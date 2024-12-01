@@ -3,6 +3,7 @@
 #include <string.h>
 #include <signal.h>
 #include "storage_analysis.h"
+#include "search_files_new2.h"
 
 int main() {
     setlocale(LC_ALL, "ko_KR.utf8");
@@ -35,7 +36,7 @@ int main() {
         mvwprintw(win, text_y, text_x, "고급 파일 탐색기");
 
         // 1., 2., 3., 4. 항목 추가
-        const char *items[] = {"1. 스토리지 사용량", "2. 퍄일 검색", "3. 백업", "4. 종료"};
+        const char *items[] = {"1. 스토리지 사용량", "2. 파일 검색", "3. 백업", "4. 종료"};
         int num_items = sizeof(items) / sizeof(items[0]);
 
         for (int i = 0; i < num_items; i++) {
@@ -45,9 +46,18 @@ int main() {
         echo();
         noecho();
 
-        int ch = getch();
+        int ch = wgetch(win);
         if (ch == '4') quit = 1;
-        if (ch == '1') storage_analysis_main();
+        if (ch == '1'){
+            wclear(win);
+            wrefresh(win);
+            storage_analysis_main();
+        }
+        if (ch == '2'){
+            wclear(win);
+            wrefresh(win);
+            search_files();
+        }
         wrefresh(win);
     } while (!quit);
 
