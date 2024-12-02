@@ -22,7 +22,7 @@
 #include <ncurses.h>
 
 #define PAGE_SIZE 10
-#define MAX_RESULTS 1000
+#define MAX_RESULTS 100000
 #define PATH_MAX 4096
 
 // 필터링에 쓰일 파일 정보 구조체
@@ -260,19 +260,19 @@ void paginate_results(WINDOW *win)
         int page_info_len = strlen(page_info);
         mvwprintw(win, rows - 2, (cols - page_info_len) / 2, "%s", page_info);
 
-        mvwprintw(win, rows - 3, 2, "Press 'n' for next page, 'q' to quit...");
+        mvwprintw(win, rows - 3, 2, "Press 'p' for previous page, 'n' for next page, 'q' to quit...");
 
         wrefresh(win);
-
-        if (page + 1 >= total_pages)
-            break;
 
         char next = wgetch(win);
         if (next == 'q')
             break;
 
-        if (next == 'n')
+        if (next == 'n' && page < total_pages - 1)
             page++;
+
+        if (next == 'p' && page > 0) 
+            page--;
     }
 }
 
@@ -345,6 +345,7 @@ void search_files() {
     if (realpath(directory, absolute_path) == NULL) {
         clear();
         printw("Error: Cannot resolve path '%s'.\n", directory);
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -364,6 +365,7 @@ void search_files() {
     if (*endptr != '\0') {
         clear();
         printw("Error: Minimum size must be a number.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -382,6 +384,7 @@ void search_files() {
     if (*endptr != '\0') {
         clear();
         printw("Error: Maximum size must be a number.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -418,6 +421,7 @@ void search_files() {
     if (save_option != 'n' && save_option != 'y') {
         clear();
         printw("Error: Invalid input for saving option.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -430,6 +434,7 @@ void search_files() {
         // 저장할 파일 이름 입력 받기
         clear();
         draw_input_box(win, 1, 1, "Enter file name to save results: ");
+        printw("Press any key to continue\n");
         mvwgetstr(win, 2, 1, save_file_name);
         wclear(win);
         wrefresh(win);
@@ -442,6 +447,7 @@ void search_files() {
     if (strptime(min_mtime_str, "%Y-%m-%d", &tm) == NULL) {
         clear();
         printw("Error: Invalid date format for min_mtime. Use YYYY-MM-DD.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -451,6 +457,7 @@ void search_files() {
     if (min_mtime == -1) {
         clear();
         printw("Error: Failed to convert min_mtime to time_t.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -461,6 +468,7 @@ void search_files() {
     if (strptime(max_mtime_str, "%Y-%m-%d", &tm) == NULL) {
         clear();
         printw("Error: Invalid date format for max_mtime. Use YYYY-MM-DD.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -470,6 +478,7 @@ void search_files() {
     if (max_mtime == -1) {
         clear();
         printw("Error: Failed to convert max_mtime to time_t.\n");
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();
@@ -481,6 +490,7 @@ void search_files() {
     if (stat(directory, &dir_stat) != 0 || !S_ISDIR(dir_stat.st_mode)) {
         clear();
         printw("Error: '%s' is not a valid directory. (%s)\n", directory, strerror(errno));
+        printw("Press any key to continue\n");
         refresh();
         wgetch(win);
         endwin();

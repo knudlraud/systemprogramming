@@ -1,5 +1,11 @@
-#define _DEFAULT_SOURCE
+/**************************************************************
+ * storage_analysis.c
+ * 2023006811 전하준
+ * 2024 fall semester sysytem programming project.
+ * visualizing the usage of the directory part of project.
+ *************************************************************/
 
+#define _DEFAULT_SOURCE
 #include "storage_analysis.h"
 
 #include <stdio.h>
@@ -156,7 +162,7 @@ void display_info(WINDOW *win, const char* path, DirEntry *entries, int count, i
         draw_bar(win, start_y + (i-start_index)*3 + 1, 2, max_x - 4, percentage);
     }
 
-    mvwprintw(win, max_y - 2, 2, "Page %d/%d. Press 'q' to quit, 'r' for new directory, 'p' for previous page, 'n' for next page", 
+    mvwprintw(win, max_y - 2, 2, "Page %d/%d. Press 'p' for previous page, 'n' for next page, 'r' for new directory, 'q' to quit...", 
               page + 1, (count + entries_per_page - 1) / entries_per_page);
     box(win, 0, 0);
 }
@@ -223,11 +229,7 @@ int storage_analysis_main() {
     } while (!quit);
 
     // Cleanup ncurses
-    delwin(win);
     endwin();
-    
-    // Reset terminal settings
-    system("reset");
 
     return 0;
 }

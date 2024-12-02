@@ -1,0 +1,6 @@
+main.o
+monibackup.o
+monitor.log
+search_files.o
+storage_analysis.o
+file_explorer.out

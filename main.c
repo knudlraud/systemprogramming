@@ -1,9 +1,17 @@
+/**************************************************************
+ * main.c
+ * 2023006811 전하준
+ * 2024 fall semester sysytem programming project.
+ * Main function that connects each function.
+ *************************************************************/
+
 #include <locale.h>
 #include <ncurses.h>
 #include <string.h>
 #include <signal.h>
 #include "storage_analysis.h"
-#include "search_files_new2.h"
+#include "search_files.h"
+#include "monibackup.h"
 
 int main() {
     setlocale(LC_ALL, "ko_KR.utf8");
@@ -57,6 +65,11 @@ int main() {
             wclear(win);
             wrefresh(win);
             search_files();
+        }
+        if (ch == '3'){
+            wclear(win);
+            wrefresh(win);
+            monibackup_main();
         }
         wrefresh(win);
     } while (!quit);
