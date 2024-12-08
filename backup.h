@@ -16,6 +16,6 @@
 #include <pthread.h> 
 #include <curses.h>
 
-int monibackup_main();
+int backup_main();
 
 #endif
