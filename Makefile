@@ -1,7 +1,7 @@
 CC = gcc
 LIBS = -lncursesw -lpthread
 CFLAGS = -Wall -Wextra
-OBJS = main.o search_files.o storage_analysis.o monibackup.o
+OBJS = main.o search_files.o storage_analysis.o backup.o
 TARGET = file_explorer.out
 
 all: $(TARGET)
@@ -12,8 +12,8 @@ $(TARGET): $(OBJS)
 main.o: search_files.h storage_analysis.h main.c
 	$(CC) $(CFLAGS) -c main.c
 
-monibackup.o: monibackup.h monibackup.c
-	$(CC) $(CFLAGS) -c monibackup.c
+monibackup.o: backup.h backup.c
+	$(CC) $(CFLAGS) -c backup.c
 
 search_files.o: search_files.h search_files.c
 	$(CC) $(CFLAGS) -c search_files.c
