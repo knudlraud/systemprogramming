@@ -1,25 +1,10 @@
 /**************************************************************
- * monibackup.c
+ * backup.c
  * 2023014973 노성민, 2023004915 장시훈
  * 2024 fall semester sysytem programming project.
  * Backing up and monitoring with visualize part of project.
  *************************************************************/
-#define _XOPEN_SOURCE 700
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <time.h>
-#include <limits.h>
-#include <libgen.h>
-#include <sys/ioctl.h>
-#include <errno.h>
-#include <pthread.h> 
-#include <curses.h>
 int PAGELEN = 0;
 int LINELEN = 0;
 
@@ -334,51 +319,6 @@ void set_isbackup() {
 	wgetch(win);
 }
 
-void perform_monitoring(const char* source) {
-	// 변경 사항 모니터링 수행
-	FILE* log_file = fopen("monitor.log", "a");
-	if (log_file == NULL) {
-		mvwprintw(win, PAGELEN - 2, 2, "Failed to open log file: %s", strerror(errno));
-		return;
-	}
-
-	mvwprintw(win, 1, 2, "Monitoring changes in directory: %s", source);
-	wrefresh(win);
-
-	// 변경 사항 확인 및 백업 수행
-	DIR* dir = opendir(source);
-	if (dir == NULL) {
-		mvwprintw(win, PAGELEN - 2, 2, "Fail to open source directory: %s", strerror(errno));
-		fclose(log_file);
-		return;
-	}
-
-	struct dirent* entry;
-	while ((entry = readdir(dir)) != NULL) {
-		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) continue;
-
-		char source_path[PATH_MAX];
-		snprintf(source_path, sizeof(source_path), "%s/%s", source, entry->d_name);
-
-		struct stat entry_stat;
-		if (stat(source_path, &entry_stat) == -1) {
-			mvwprintw(win, PAGELEN - 2, 2, "Failed to get file status: %s", strerror(errno));
-			continue;
-		}
-
-		// 파일이 수정되었는지 확인
-		// 여기서 기존 백업 파일과 비교하여 수정 여부를 판단할 수 있습니다.
-		// 예시로 단순히 로그에 파일 이름과 수정 시간을 기록합니다.
-		fprintf(log_file, "Checked file: %s, Last modified: %s", source_path, ctime(&entry_stat.st_mtime));
-	}
-
-	closedir(dir);
-	fclose(log_file);
-	mvwprintw(win, 3, 2, "Monitoring completed. Check 'monitor.log' for details.");
-	wrefresh(win);
-}
-
-
 int monibackup_main() {
 	struct winsize wbuf;
 
@@ -418,9 +358,8 @@ int monibackup_main() {
 		int input = 0;
 		mvwprintw(win, 1, 2, "=====Backup Menu=====");
 		mvwprintw(win, 2, 2, "1. View list of backupfiles.");
-		mvwprintw(win, 3, 2, "2. Monitoring");
-		mvwprintw(win, 4, 2, "3. Stop or Start backupping");
-		mvwprintw(win, 5, 2, "4. Back to the Main Menu");
+		mvwprintw(win, 4, 2, "2. Stop or Start backupping");
+		mvwprintw(win, 5, 2, "3. Back to the Main Menu");
 		mvwprintw(win, 6, 2, "=====================");
 		mvwprintw(win, 7, 2, "Enter the menu: ");
 		box(win, 0, 0);
@@ -437,24 +376,8 @@ int monibackup_main() {
 			wclear(win);
 			break;
 		}
+
 		case 2: {
-			wclear(win);
-			box(win, 0, 0);
-			mvwprintw(win, 1, 2, "Monitoring changes in directory: %s", main_source_dir);
-			wrefresh(win);
-
-			// 모니터링 수행
-			perform_monitoring(main_source_dir);
-
-			mvwprintw(win, 3, 2, "Monitoring completed. You can view log file in each directory.");
-			mvwprintw(win, 4, 2, "Press any key to continue...");
-			wrefresh(win);
-			wgetch(win);
-			wclear(win);
-			break;
-		}
-
-		case 3: {
 			char input5;
 			while (1) {
 				if (isbackup) {
@@ -482,7 +405,7 @@ int monibackup_main() {
 			}
 			break;
 		}
-		case 4: wclear(win); endwin(); return 1;
+		case 3: wclear(win); endwin(); return 1;
 		default: {
 			mvwprintw(win, 9, 2, "Unsupported input.");
 			wrefresh(win);
