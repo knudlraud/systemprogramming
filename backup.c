@@ -334,7 +334,7 @@ void set_isbackup() {
 	wgetch(win);
 }
 
-int monibackup_main() {
+int backup_main() {
 	struct winsize wbuf;
 
 	if (ioctl(0, TIOCGWINSZ, &wbuf) != -1) {
