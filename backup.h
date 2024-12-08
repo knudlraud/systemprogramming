@@ -1,5 +1,5 @@
-#ifndef MONIBACKUP_H
-#define MONIBACKUP_H
+#ifndef BACKUP_H
+#define BACKUP_H
 
 #include <stdio.h>
 #include <stdlib.h>
