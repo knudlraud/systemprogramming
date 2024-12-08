@@ -1,5 +1,6 @@
 main.o
-monibackup.o
+backup.o
+moni.o
 monitor.log
 search_files.o
 storage_analysis.o
