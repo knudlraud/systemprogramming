@@ -11,7 +11,7 @@
 #include <signal.h>
 #include "storage_analysis.h"
 #include "search_files.h"
-#include "monibackup.h"
+#include "backup.h"
 
 int main() {
     setlocale(LC_ALL, "ko_KR.utf8");
@@ -69,7 +69,7 @@ int main() {
         if (ch == '3'){
             wclear(win);
             wrefresh(win);
-            monibackup_main();
+            backup_main();
         }
         wrefresh(win);
     } while (!quit);
