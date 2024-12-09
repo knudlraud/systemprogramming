@@ -23,7 +23,7 @@
 int PAGELEN = 0;
 int LINELEN = 0;
 
-int CYCLE = 60; // 1 minutes for the backup cycle
+int CYCLE = 1; // 1 minutes for the backup cycle
 int isbackup = 1;
 pthread_t backup_thread;
 char main_source_dir[PATH_MAX];
@@ -80,7 +80,7 @@ void change_filename(const char* dest_path) {
 	char extension[PATH_MAX];
 	if (stat(dest_path, &st) == -1) return;
 	get_time(st.st_mtime, buffer, sizeof(buffer));
-	
+
 	char new_dest_path[PATH_MAX];
 	char* dot = strrchr(dest_path, '.');
 	if (dot != NULL) {
@@ -216,10 +216,10 @@ void view_backuplists(const char* backup_dir) {
 		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
 			continue;
 
-		if (strstr(entry->d_name, last_slash + 1) != NULL) {
-			mvwprintw(win, i, 2, "- %s", entry->d_name);
-			i++;
-		}
+		//if (strstr(entry->d_name, last_slash + 1) != NULL) {
+		mvwprintw(win, i, 2, "- %s", entry->d_name);
+		i++;
+		//}
 	}
 	wrefresh(win);
 	i++;
@@ -283,9 +283,9 @@ void view_backuplists(const char* backup_dir) {
 				snprintf(filepath, sizeof(filepath), "%s/%s", buffer, entry->d_name);
 				//There's warning but we'll ignore in 148
 
-				if (strstr(entry->d_name, last_slash + 1) != NULL) {
-					remove(filepath);
-				}
+				//if (strstr(entry->d_name, last_slash + 1) != NULL) {
+				remove(filepath);
+				//}
 			}
 			mvwprintw(win, i + 1, 2, "Deletion Completed");
 			wrefresh(win);
@@ -358,6 +358,7 @@ int backup_main() {
 	DIR* dir = opendir(main_source_dir);
 	if (dir == NULL) {
 		wclear(win);
+		box(win, 0, 0);
 		mvwprintw(win, 1, 4, "Fail to open source directory", strerror(errno));
 		wgetch(win);
 		wclear(win);
@@ -373,10 +374,10 @@ int backup_main() {
 		int input = 0;
 		mvwprintw(win, 1, 2, "=====Backup Menu=====");
 		mvwprintw(win, 2, 2, "1. View list of backupfiles.");
-		mvwprintw(win, 4, 2, "2. Stop or Start backupping");
-		mvwprintw(win, 5, 2, "3. Back to the Main Menu");
-		mvwprintw(win, 6, 2, "=====================");
-		mvwprintw(win, 7, 2, "Enter the menu: ");
+		mvwprintw(win, 3, 2, "2. Stop or Start backupping");
+		mvwprintw(win, 4, 2, "3. Back to the Main Menu");
+		mvwprintw(win, 5, 2, "=====================");
+		mvwprintw(win, 6, 2, "Enter the menu: ");
 		box(win, 0, 0);
 		wscanw(win, "%d", &input);
 		wrefresh(win);
