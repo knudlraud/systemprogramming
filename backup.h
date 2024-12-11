@@ -1,6 +1,9 @@
 #ifndef BACKUP_H
 #define BACKUP_H
 
+
+#define _XOPEN_SOURCE 700
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
