@@ -8,18 +8,7 @@
 #define _DEFAULT_SOURCE
 #include "storage_analysis.h"
 
-#include <stdio.h>
-#include <locale.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <ncurses.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
-#include <dirent.h>
 
-#define MAX_PATH 1024
-#define MAX_ENTRIES 1000
 
 typedef struct {
     char name[MAX_PATH];
