@@ -11,6 +11,11 @@
 #include <stdlib.h>
 #include <dirent.h>
 
+
+#define MAX_PATH 1024
+#define MAX_ENTRIES 1000
+
+
 int storage_analysis_main();
 
 #endif
