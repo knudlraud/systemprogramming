@@ -272,6 +272,12 @@ void input_directories(WINDOW* win) {
             mvwprintw(win, height / 2, (width - strlen("Returning to menu...")) / 2, "Returning to menu...");
             wrefresh(win);
             napms(1000);
+
+            
+            wclear(win);
+            box(win, 0, 0);
+            display_menu(win);
+            
             break;
         }
 
