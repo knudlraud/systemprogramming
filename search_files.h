@@ -17,6 +17,11 @@
 #include <fcntl.h>
 #include <ncurses.h>
 
+#define PAGE_SIZE 10
+#define MAX_RESULTS 100000
+#define PATH_MAX 4096
+
+
 void search_files();
 
 #endif
