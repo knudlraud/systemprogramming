@@ -195,8 +195,13 @@ void view_log_file(WINDOW* win) {
     if (log_file == NULL) {
         mvwprintw(win, 2, 1, "Failed to open log file.\n");
         wrefresh(win);
-        wgetch(win);
-        return;
+        int ch = wgetch(win);
+        if (ch == 'q')
+        {
+            wclear(win);
+            box(win, 0, 0);
+            return;
+        }
     }
 
     char line[256];
