@@ -312,7 +312,6 @@ int moni_main() {
     WINDOW* win = newwin(0, 0, 0, 0);
     box(win, 0, 0);
 
-    int choice;
     do {
         display_menu(win);
         int ch = wgetch(win);
