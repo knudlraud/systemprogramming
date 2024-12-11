@@ -4,22 +4,10 @@
  * 2024 fall semester sysytem programming project.
  * Backing up and monitoring with visualize part of project.
  *************************************************************/
-#define _XOPEN_SOURCE 700
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <time.h>
-#include <limits.h>
-#include <libgen.h>
-#include <sys/ioctl.h>
-#include <errno.h>
-#include <pthread.h> 
-#include <curses.h>
+
+#include "backup.h"
+
 int PAGELEN = 0;
 int LINELEN = 0;
 
