@@ -188,6 +188,17 @@ void stop_monitoring(WINDOW* win) {
         pthread_join(threads[i], NULL);
     }
     dir_count = 0;
+    
+    wclear(win);
+    box(win, 0, 0);
+    mvwprintw(win, 1, 1, "Monitoring stopped.");
+    wrefresh(win);
+    napms(1000); 
+
+    wclear(win);
+    box(win, 0, 0);
+    display_menu(win); 
+    
 }
 
 void view_log_file(WINDOW* win) {
