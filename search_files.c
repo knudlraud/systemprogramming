@@ -5,25 +5,7 @@
  * Implementation of search and visualize part of project.
  *************************************************************/
 
-#define _XOPEN_SOURCE 700 // Enable POSIX extensions like strptime
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <signal.h>
-#include <time.h>
-#include <limits.h>
-#include <ctype.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <ncurses.h>
-
-#define PAGE_SIZE 10
-#define MAX_RESULTS 100000
-#define PATH_MAX 4096
+#include "search_files.h"
 
 // 필터링에 쓰일 파일 정보 구조체
 typedef struct
